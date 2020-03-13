@@ -50,16 +50,23 @@ function AccountPermissions() {
 
 
   function UserPermission({ user }) {
+    const [admin, setAdmin] =  React.useState(user.role === "admin")
+    // function
+    const handleChangePermission = ()=>{
+      setAdmin(prevState => !prevState)
+
+
+    }
     return (
       <Table.Row>
         <Table.Cell collapsing>
-          <Checkbox toggle />
+          <Checkbox toggle onChange={handleChangePermission} checked={admin}/>
         </Table.Cell>
         <Table.Cell>{user.name}</Table.Cell>
         <Table.Cell>{user.email}</Table.Cell>
         <Table.Cell>{user.createdAt}</Table.Cell>
         <Table.Cell>{user.updatedAt}</Table.Cell>
-        <Table.Cell>{user.role}</Table.Cell>
+        <Table.Cell>{admin ? "admin": "user"}</Table.Cell>
       </Table.Row>
     );
   }
