@@ -60,5 +60,8 @@ async function handleDeleteRequest(req, res) {
     );
 
     res.status(204).json({});
-  } catch (error) {}
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Error deleting product");
+  }
 }
