@@ -3,6 +3,7 @@ import axios from "axios";
 import baseUrl from "../../utils/baseUrl";
 import cookie from "js-cookie";
 import { Header, Checkbox, Table, Icon } from "semantic-ui-react";
+import formatDate from "../../utils/formatDate";
 
 function AccountPermissions() {
   // function
@@ -47,45 +48,37 @@ function AccountPermissions() {
     </div>
   );
 
-
-
   function UserPermission({ user }) {
-    const [admin, setAdmin] =  React.useState(user.role === "admin")
+    const [admin, setAdmin] = React.useState(user.role === "admin");
     const isFirstRun = React.useRef(true);
-    React.useEffect( ()=>{
-      if(isFirstRun.current){
-        isFirstRun.current= false;
-        return
+    React.useEffect(() => {
+      if (isFirstRun.current) {
+        isFirstRun.current = false;
+        return;
       }
-      updatePermission()
-
-    }, [admin ])
+      updatePermission();
+    }, [admin]);
     // functions
-    const handleChangePermission = ()=>{
-      setAdmin(prevState => !prevState)
+    const handleChangePermission = () => {
+      setAdmin(prevState => !prevState);
+    };
 
-
-    }
-    
-    const updatePermission = async ()=>{
+    const updatePermission = async () => {
       const url = `${baseUrl}/api/account`;
-      const payload = {_id: user._id, role: admin ? "admin":"user"};
-      await axios.put(url, payload)
-
-
-    }
-
+      const payload = { _id: user._id, role: admin ? "admin" : "user" };
+      await axios.put(url, payload);
+    };
 
     return (
       <Table.Row>
         <Table.Cell collapsing>
-          <Checkbox toggle onChange={handleChangePermission} checked={admin}/>
+          <Checkbox toggle onChange={handleChangePermission} checked={admin} />
         </Table.Cell>
         <Table.Cell>{user.name}</Table.Cell>
         <Table.Cell>{user.email}</Table.Cell>
-        <Table.Cell>{user.createdAt}</Table.Cell>
-        <Table.Cell>{user.updatedAt}</Table.Cell>
-        <Table.Cell>{admin ? "admin": "user"}</Table.Cell>
+        <Table.Cell>{formatDate(user.createdAt)}</Table.Cell>
+        <Table.Cell>{formatDate(user.updatedAt)}</Table.Cell>
+        <Table.Cell>{admin ? "admin" : "user"}</Table.Cell>
       </Table.Row>
     );
   }
